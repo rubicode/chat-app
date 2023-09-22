@@ -2,12 +2,13 @@
 
 import { useEffect } from "react";
 import ChatItem from "./ChatItem";
-import { useDispatch, useSelector } from "@/lib/redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadChatAsync, selectChats } from "@/lib/redux/chats/chatSlice";
+import { AppDispatch } from "@/lib/redux/store";
 
 export default function ChatList() {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const chats = useSelector(selectChats);
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function ChatList() {
                     </div>
                 </div>
 
-                {chats.map((chat: Message) => (<ChatItem chat={chat} />))}
+                {chats.map((chat: Message) => (<ChatItem key={chat._id} chat={chat} />))}
 
             </div>
         </div>
