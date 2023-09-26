@@ -18,10 +18,18 @@ export default function SignIn() {
 
     const submit = async (e: any) => {
         e.preventDefault()
-        const { data } = await request.post('/users/signin', user);
-        localStorage.setItem("account", JSON.stringify(data))
-        dispatch(setSender(data.username))
-        router.push('/chats')
+        try {
+            const { data } = await request.post('/users/signin', user);
+            if (data.success) {
+                localStorage.setItem("account", JSON.stringify(data))
+                dispatch(setSender(data.username))
+                router.push('/chats')
+            } else {
+                alert(data.error)
+            }
+        } catch (e: any) {
+            alert(e.message)
+        }
     }
 
     return (

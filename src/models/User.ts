@@ -2,22 +2,23 @@ import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 const saltRounds = 10;
 
-export interface User extends Document {
+export interface IUser extends Document {
     username: string;
     password: string;
+    token: string;
     created: true | false;
     checkPassword: (password: string) => boolean;
 }
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<IUser>({
     username: { type: String, required: true },
     password: { type: String, required: true }
 });
 
 userSchema.pre('save', function (next) {
-    if (!this.created) {
-        this.password = bcrypt.hashSync(this.password, saltRounds)
-    }
+    // if (!this.created) {
+    //     this.password = bcrypt.hashSync(this.password, saltRounds)
+    // }
     next();
 });
 
@@ -29,5 +30,5 @@ userSchema.static('hashPassword', function (password: string): string {
     return bcrypt.hashSync(password, saltRounds);
 });
 
-export default mongoose.models.User || mongoose.model<User>('User', userSchema);
+export default mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+const saltRounds = 10;
 
 import connectDB from '../../../../db';
 import User from '../../../../models/User';
@@ -17,11 +19,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const newUser = new User({
             username,
-            password
+            password: bcrypt.hashSync(password, saltRounds)
         });
+        console.log(newUser)
         await newUser.save()
 
-        return NextResponse.json({ username: newUser.username, token: jwt.sign({ _id: newUser._id, username: newUser.username }, 'rubicamp') })
+        newUser.token = jwt.sign({ _id: newUser._id, username: newUser.username }, 'rubicamp')
+
+        await newUser.save()
+
+        return NextResponse.json({ username: newUser.username, token: newUser.token })
     } catch (error: any) {
         return NextResponse.json({ error: error.message })
     }

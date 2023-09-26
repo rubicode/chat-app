@@ -12,7 +12,6 @@ export default function ChatBox() {
 
     useEffect(() => {
         const account: any = JSON.parse(localStorage.getItem("account") || 'null')
-        console.log(account)
         if (!(account !== null && account.token)) {
             router.push('/users/signin')
         }

@@ -17,8 +17,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         if (!user.checkPassword(password)) throw new Error("password is wrong")
 
-        return NextResponse.json({ username: user.username, token: jwt.sign({ _id: user._id, username: user.username }, 'rubicamp') })
+        user.token = jwt.sign({ _id: user._id, username: user.username }, 'rubicamp')
+
+        await user.save()
+
+        return NextResponse.json({ success: true, username: user.username, token: user.token })
     } catch (error: any) {
-        return NextResponse.json({ error: error.message })
+        return NextResponse.json({ success: false, error: error.message })
     }
 }
