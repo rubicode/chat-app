@@ -4,3 +4,8 @@ declare type Message = {
     sender: string;
     receiver: string;
 }
+
+declare type User = {
+    _id: string;
+    username: string;
+}

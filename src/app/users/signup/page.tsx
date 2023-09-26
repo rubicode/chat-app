@@ -4,8 +4,13 @@ import { request } from '@/lib/api'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useDispatch } from "react-redux";
+import { AppDispatch } from '@/lib/redux/store'
+import { setSender } from '@/lib/redux/users/userSlice'
 
 export default function SignUp() {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter()
 
@@ -15,6 +20,7 @@ export default function SignUp() {
         e.preventDefault()
         const { data } = await request.post('/users/signup', user);
         localStorage.setItem("account", JSON.stringify(data))
+        dispatch(setSender(data.username))
         router.push('/chats')
     }
 

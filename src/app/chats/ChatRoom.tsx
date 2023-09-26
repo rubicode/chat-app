@@ -1,7 +1,17 @@
+"use client"
+
 import ChatForm from "./ChatForm";
 import ChatList from "./ChatList";
 
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from '@/lib/redux/store';
+import { selectReceiver } from "@/lib/redux/users/userSlice";
+
 export default function ChatRoom() {
+
+    const dispatch = useDispatch<AppDispatch>();
+    const receiver = useSelector(selectReceiver);
+
     return (
         <div className="w-2/3 border flex flex-col">
 
@@ -13,10 +23,10 @@ export default function ChatRoom() {
                     </div>
                     <div className="ml-4">
                         <p className="text-grey-darkest">
-                            New Movie! Expendables 4
+                            {receiver}
                         </p>
                         <p className="text-grey-darker text-xs mt-1">
-                            Andrés, Tom, Harrison, Arnold, Sylvester
+                            online
                         </p>
                     </div>
                 </div>

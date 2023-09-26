@@ -2,11 +2,24 @@
 
 import { request } from '@/lib/api'
 import { useRouter } from 'next/navigation'
+import ContactItem from './ContactItem'
+import { useDispatch, useSelector } from "react-redux";
+import { loadUserAsync, selectSender, selectUsers, setReceiver } from "@/lib/redux/users/userSlice";
+import { AppDispatch } from '@/lib/redux/store';
+import { useEffect } from 'react';
 
 
 export default function ChatContact() {
 
+    const dispatch = useDispatch<AppDispatch>();
+    const users = useSelector(selectUsers);
+    const sender = useSelector(selectSender);
+
     const router = useRouter()
+
+    useEffect(() => {
+        dispatch(loadUserAsync({ sender }))
+    }, [dispatch, sender])
 
     const signout = async () => {
         try {
@@ -47,101 +60,7 @@ export default function ChatContact() {
 
             {/* Contacts  */}
             < div className="bg-grey-lighter flex-1 overflow-auto" >
-                <div className="px-3 flex items-center bg-grey-light cursor-pointer">
-                    <div>
-                        <img className="h-12 w-12 rounded-full"
-                            src="https://darrenjameseeley.files.wordpress.com/2014/09/expendables3.jpeg" />
-                    </div>
-                    <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                        <div className="flex items-bottom justify-between">
-                            <p className="text-grey-darkest">
-                                New Movie! Expendables 4
-                            </p>
-                            <p className="text-xs text-grey-darkest">
-                                12:45 pm
-                            </p>
-                        </div>
-                        <p className="text-grey-dark mt-1 text-sm">
-                            Get Andrés on this movie ASAP!
-                        </p>
-                    </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-grey-lighter cursor-pointer">
-                    <div>
-                        <img className="h-12 w-12 rounded-full"
-                            src="https://www.biography.com/.image/t_share/MTE5NDg0MDU1MTIyMTE4MTU5/arnold-schwarzenegger-9476355-1-402.jpg" />
-                    </div>
-                    <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                        <div className="flex items-bottom justify-between">
-                            <p className="text-grey-darkest">
-                                Arnold Schwarzenegger
-                            </p>
-                            <p className="text-xs text-grey-darkest">
-                                12:45 pm
-                            </p>
-                        </div>
-                        <p className="text-grey-dark mt-1 text-sm">
-                            I'll be back
-                        </p>
-                    </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-grey-lighter cursor-pointer">
-                    <div>
-                        <img className="h-12 w-12 rounded-full"
-                            src="https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg" />
-                    </div>
-                    <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                        <div className="flex items-bottom justify-between">
-                            <p className="text-grey-darkest">
-                                Russell Crowe
-                            </p>
-                            <p className="text-xs text-grey-darkest">
-                                12:45 pm
-                            </p>
-                        </div>
-                        <p className="text-grey-dark mt-1 text-sm">
-                            Hold the line!
-                        </p>
-                    </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-grey-lighter cursor-pointer">
-                    <div>
-                        <img className="h-12 w-12 rounded-full"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGpYTzuO0zLW7yadaq4jpOz2SbsX90okb24Z9GtEvK6Z9x2zS5" />
-                    </div>
-                    <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                        <div className="flex items-bottom justify-between">
-                            <p className="text-grey-darkest">
-                                Tom Cruise
-                            </p>
-                            <p className="text-xs text-grey-darkest">
-                                12:45 pm
-                            </p>
-                        </div>
-                        <p className="text-grey-dark mt-1 text-sm">
-                            Show me the money!
-                        </p>
-                    </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-grey-lighter cursor-pointer">
-                    <div>
-                        <img className="h-12 w-12 rounded-full"
-                            src="https://www.biography.com/.image/t_share/MTE5NTU2MzE2MjE4MTY0NzQ3/harrison-ford-9298701-1-sized.jpg" />
-                    </div>
-                    <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                        <div className="flex items-bottom justify-between">
-                            <p className="text-grey-darkest">
-                                Harrison Ford
-                            </p>
-                            <p className="text-xs text-grey-darkest">
-                                12:45 pm
-                            </p>
-                        </div>
-                        <p className="text-grey-dark mt-1 text-sm">
-                            Tell Java I have the money
-                        </p>
-                    </div>
-                </div>
+                {users.map((user: any) => (<ContactItem key={user._id} user={user} />))}
             </div>
 
         </div>

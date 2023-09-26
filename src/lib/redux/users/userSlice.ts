@@ -11,8 +11,9 @@ const initialState = {
 export const loadUserAsync = createAsyncThunk(
   'users/loadUserAsync',
   async ({ sender }: { sender: string }) => {
-    const { data } = await fetchLoadUser(sender);
-    return data;
+    console.log(sender, 'dikirim')
+    const users = await fetchLoadUser(sender);
+    return users;
   }
 );
 
@@ -20,10 +21,10 @@ export const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    setSender: (state: any, action: PayloadAction<Message>) => {
+    setSender: (state: any, action: PayloadAction<string>) => {
       state.sender = action.payload;
     },
-    setReceiver: (state: any, action: PayloadAction<Message>) => {
+    setReceiver: (state: any, action: PayloadAction<string>) => {
       state.receiver = action.payload;
     }
   },

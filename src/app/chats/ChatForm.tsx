@@ -1,19 +1,28 @@
 "use client"
 
 import { addChat } from "@/lib/redux/chats/chatSlice"
-import { useState } from "react"
-import { useDispatch } from "react-redux";
+import { selectSender, selectReceiver } from "@/lib/redux/users/userSlice"
+import { useContext, useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
+
+import { SocketContext } from './ChatBox';
 
 export default function ChatForm() {
 
+    const socket = useContext(SocketContext);
+
     const dispatch = useDispatch<AppDispatch>();
+
+    const sender = useSelector(selectSender);
+    const receiver = useSelector(selectReceiver);
 
     const [content, setContent] = useState('')
 
     const add = (e: any) => {
         e.preventDefault()
         dispatch(addChat(content))
+        socket.emit('message', { room: `${sender}-${receiver}`, sender, receiver })
         setContent('')
     }
 

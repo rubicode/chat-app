@@ -8,17 +8,11 @@ connectDB();
 export async function GET(req: NextRequest, res: NextResponse) {
     try {
         const sender = req.nextUrl.searchParams.get('sender');
-        const receiver = req.nextUrl.searchParams.get('receiver');
-        const chats = await User.find({
-            $or: [{
-                sender: sender, receiver: receiver
-            }, {
-                sender: receiver, receiver: sender
-            }]
-        }).sort({ createdAt: 1 });
-        return NextResponse.json({ data: chats })
+        const users = await User.find({ username: { $nin: [sender] } });
+
+        return NextResponse.json({ users })
     } catch (error) {
-        return NextResponse.json({ data: error })
+        return NextResponse.json({ error })
     }
 }
 

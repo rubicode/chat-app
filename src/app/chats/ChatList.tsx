@@ -1,19 +1,26 @@
 "use client"
 
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import ChatItem from "./ChatItem";
 import { useDispatch, useSelector } from "react-redux";
 import { loadChatAsync, selectChats } from "@/lib/redux/chats/chatSlice";
 import { AppDispatch } from "@/lib/redux/store";
+import { selectReceiver, selectSender } from "@/lib/redux/users/userSlice";
+
+import { SocketContext } from './ChatBox';
 
 export default function ChatList() {
 
+    const socket = useContext(SocketContext);
+
     const dispatch = useDispatch<AppDispatch>();
     const chats = useSelector(selectChats);
+    const sender = useSelector(selectSender);
+    const receiver = useSelector(selectReceiver);
 
     useEffect(() => {
-        dispatch(loadChatAsync({ sender: 'rubi', receiver: 'oki' }))
-    }, [])
+        dispatch(loadChatAsync({ sender, receiver }))
+    }, [sender, receiver])
 
     return (
         <div className="flex-1 overflow-auto" style={{ backgroundColor: "#DAD3CC" }}>

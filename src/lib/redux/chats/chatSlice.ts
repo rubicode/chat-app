@@ -58,7 +58,7 @@ export const selectChats = (state: any) => state.chats.value;
 
 export const addChat = (content: string) => (dispatch: any, getState: any) => {
   const _id = Date.now().toString()
-  const message: Message = { _id, content, sender: 'oki', receiver: 'rubi' }
+  const message: Message = { _id, content, sender: getState().users.sender, receiver: getState().users.receiver }
   dispatch(add(message))
   dispatch(addChatAsync(message))
 };

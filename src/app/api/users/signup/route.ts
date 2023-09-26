@@ -21,7 +21,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
             username,
             password: bcrypt.hashSync(password, saltRounds)
         });
-        console.log(newUser)
         await newUser.save()
 
         newUser.token = jwt.sign({ _id: newUser._id, username: newUser.username }, 'rubicamp')
