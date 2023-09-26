@@ -1,7 +1,23 @@
+"use client"
+
+import { useEffect } from "react";
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import ChatContact from "./ChatContact";
 import ChatRoom from "./ChatRoom";
 
 export default function ChatBox() {
+
+    const router = useRouter()
+
+    useEffect(() => {
+        const account: any = JSON.parse(localStorage.getItem("account") || 'null')
+        console.log(account)
+        if (!(account !== null && account.token)) {
+            router.push('/users/signin')
+        }
+    }, [])
+
     return (
         <div>
             <div className="w-full h-32" style={{ backgroundColor: "#449388" }}></div>

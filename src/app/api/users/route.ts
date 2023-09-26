@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import connectDB from '../../../db';
-import Chat from '../../../models/Chat';
+import User from '../../../models/User';
 
 connectDB();
 
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     try {
         const sender = req.nextUrl.searchParams.get('sender');
         const receiver = req.nextUrl.searchParams.get('receiver');
-        const chats = await Chat.find({
+        const chats = await User.find({
             $or: [{
                 sender: sender, receiver: receiver
             }, {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const body = await req.json()
         const { content, sender, receiver } = body
 
-        const chat = new Chat({
+        const chat = new User({
             content,
             sender,
             receiver
